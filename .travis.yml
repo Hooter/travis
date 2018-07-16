@@ -11,9 +11,21 @@ branches:
 before_script:
   - npm install -g --silent firebase-tools # installs firebase to run firebase deploy
   - npm install -g --silent @angular/cli
+  - greenkeeper-lockfile-update
+
+after_script:
+  - greenkeeper-lockfile-upload
 
 script:
   - ng build --prod
+
+before_install:
+  # package-lock.json was introduced in npm@5
+  - '[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest' # skipped when using node 9
+  - npm install -g greenkeeper-lockfile  
+
+install: npm install
+
 
 after_success:
   # firebase deploy after angular-cli build
